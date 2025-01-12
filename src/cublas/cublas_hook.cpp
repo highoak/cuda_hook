@@ -8,6 +8,20 @@
 #include "hook.h"
 #include "macro_common.h"
 #include "trace_profile.h"
+#include <cstdarg>  // Add this line to include the necessary header for va_start and va_end
+
+void log_function_call(const char* func_name, const char* format, ...) {
+    FILE *log_file = fopen("/tmp/log.txt", "a");
+    if (log_file) {
+        va_list args;
+        va_start(args, format);
+        fprintf(log_file, "%s called with ", func_name);
+        vfprintf(log_file, format, args);
+        fprintf(log_file, "\n");
+        va_end(args);
+        fclose(log_file);
+    }
+}
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus cublasInit() {
     HOOK_TRACE_PROFILE("cublasInit");
@@ -3165,6 +3179,14 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasSgemm_v2(cublasHandle_t handle,
                            const float *, int, const float *, int, const float *, float *, int);
     static auto func_entry = reinterpret_cast<func_ptr>(HOOK_CUBLAS_SYMBOL("cublasSgemm_v2"));
     HOOK_CHECK(func_entry);
+
+    log_function_call("cublasSgemm_v2", "transa=%d, transb=%d, m=%d, n=%d, k=%d, lda=%d, ldb=%d, ldc=%d",
+                      transa, transb, m, n, k, lda, ldb, ldc);
+    // HLOG("cublasSgemm_v2 called with transa=%d, transb=%d, m=%d, n=%d, k=%d, lda=%d, ldb=%d, ldc=%d\n",
+    
+    
+    
+    // transa, transb, m, n, k, lda, ldb, ldc);
     return func_entry(handle, transa, transb, m, n, k, alpha, A, lda, B, ldb, beta, C, ldc);
 }
 
@@ -4931,10 +4953,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtChemm(cublasXtHandle_t handle
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtZhemm(cublasXtHandle_t handle, cublasSideMode_t side,
-                                                         cublasFillMode_t uplo, size_t m, size_t n,
-                                                         const cuDoubleComplex *alpha, const cuDoubleComplex *A,
-                                                         size_t lda, const cuDoubleComplex *B, size_t ldb,
-                                                         const cuDoubleComplex *beta, cuDoubleComplex *C, size_t ldc) {
+                                                          cublasFillMode_t uplo, size_t m, size_t n,
+                                                          const cuDoubleComplex *alpha, const cuDoubleComplex *A,
+                                                          size_t lda, const cuDoubleComplex *B, size_t ldb,
+                                                          const cuDoubleComplex *beta, cuDoubleComplex *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtZhemm");
     using func_ptr =
         cublasStatus_t (*)(cublasXtHandle_t, cublasSideMode_t, cublasFillMode_t, size_t, size_t,
@@ -4946,10 +4968,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtZhemm(cublasXtHandle_t handle
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtSsyrkx(cublasXtHandle_t handle, cublasFillMode_t uplo,
-                                                          cublasOperation_t trans, size_t n, size_t k,
-                                                          const float *alpha, const float *A, size_t lda,
-                                                          const float *B, size_t ldb, const float *beta, float *C,
-                                                          size_t ldc) {
+                                                           cublasOperation_t trans, size_t n, size_t k,
+                                                           const float *alpha, const float *A, size_t lda,
+                                                           const float *B, size_t ldb, const float *beta, float *C,
+                                                           size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtSsyrkx");
     using func_ptr =
         cublasStatus_t (*)(cublasXtHandle_t, cublasFillMode_t, cublasOperation_t, size_t, size_t, const float *,
@@ -4960,10 +4982,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtSsyrkx(cublasXtHandle_t handl
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtDsyrkx(cublasXtHandle_t handle, cublasFillMode_t uplo,
-                                                          cublasOperation_t trans, size_t n, size_t k,
-                                                          const double *alpha, const double *A, size_t lda,
-                                                          const double *B, size_t ldb, const double *beta, double *C,
-                                                          size_t ldc) {
+                                                           cublasOperation_t trans, size_t n, size_t k,
+                                                           const double *alpha, const double *A, size_t lda,
+                                                           const double *B, size_t ldb, const double *beta, double *C,
+                                                           size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtDsyrkx");
     using func_ptr =
         cublasStatus_t (*)(cublasXtHandle_t, cublasFillMode_t, cublasOperation_t, size_t, size_t, const double *,
@@ -4974,10 +4996,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtDsyrkx(cublasXtHandle_t handl
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtCsyrkx(cublasXtHandle_t handle, cublasFillMode_t uplo,
-                                                          cublasOperation_t trans, size_t n, size_t k,
-                                                          const cuComplex *alpha, const cuComplex *A, size_t lda,
-                                                          const cuComplex *B, size_t ldb, const cuComplex *beta,
-                                                          cuComplex *C, size_t ldc) {
+                                                           cublasOperation_t trans, size_t n, size_t k,
+                                                           const cuComplex *alpha, const cuComplex *A, size_t lda,
+                                                           const cuComplex *B, size_t ldb, const cuComplex *beta,
+                                                           cuComplex *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtCsyrkx");
     using func_ptr = cublasStatus_t (*)(cublasXtHandle_t, cublasFillMode_t, cublasOperation_t, size_t, size_t,
                                         const cuComplex *, const cuComplex *, size_t, const cuComplex *, size_t,
@@ -4988,10 +5010,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtCsyrkx(cublasXtHandle_t handl
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtZsyrkx(cublasXtHandle_t handle, cublasFillMode_t uplo,
-                                                          cublasOperation_t trans, size_t n, size_t k,
-                                                          const cuDoubleComplex *alpha, const cuDoubleComplex *A,
-                                                          size_t lda, const cuDoubleComplex *B, size_t ldb,
-                                                          const cuDoubleComplex *beta, cuDoubleComplex *C, size_t ldc) {
+                                                           cublasOperation_t trans, size_t n, size_t k,
+                                                           const cuDoubleComplex *alpha, const cuDoubleComplex *A,
+                                                           size_t lda, const cuDoubleComplex *B, size_t ldb,
+                                                           const cuDoubleComplex *beta, cuDoubleComplex *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtZsyrkx");
     using func_ptr =
         cublasStatus_t (*)(cublasXtHandle_t, cublasFillMode_t, cublasOperation_t, size_t, size_t,
@@ -5003,10 +5025,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtZsyrkx(cublasXtHandle_t handl
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtCher2k(cublasXtHandle_t handle, cublasFillMode_t uplo,
-                                                          cublasOperation_t trans, size_t n, size_t k,
-                                                          const cuComplex *alpha, const cuComplex *A, size_t lda,
-                                                          const cuComplex *B, size_t ldb, const float *beta,
-                                                          cuComplex *C, size_t ldc) {
+                                                           cublasOperation_t trans, size_t n, size_t k,
+                                                           const cuComplex *alpha, const cuComplex *A, size_t lda,
+                                                           const cuComplex *B, size_t ldb, const float *beta,
+                                                           cuComplex *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtCher2k");
     using func_ptr =
         cublasStatus_t (*)(cublasXtHandle_t, cublasFillMode_t, cublasOperation_t, size_t, size_t, const cuComplex *,
@@ -5017,10 +5039,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtCher2k(cublasXtHandle_t handl
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtZher2k(cublasXtHandle_t handle, cublasFillMode_t uplo,
-                                                          cublasOperation_t trans, size_t n, size_t k,
-                                                          const cuDoubleComplex *alpha, const cuDoubleComplex *A,
-                                                          size_t lda, const cuDoubleComplex *B, size_t ldb,
-                                                          const double *beta, cuDoubleComplex *C, size_t ldc) {
+                                                           cublasOperation_t trans, size_t n, size_t k,
+                                                           const cuDoubleComplex *alpha, const cuDoubleComplex *A,
+                                                           size_t lda, const cuDoubleComplex *B, size_t ldb,
+                                                           const double *beta, cuDoubleComplex *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtZher2k");
     using func_ptr = cublasStatus_t (*)(cublasXtHandle_t, cublasFillMode_t, cublasOperation_t, size_t, size_t,
                                         const cuDoubleComplex *, const cuDoubleComplex *, size_t,
@@ -5031,9 +5053,9 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtZher2k(cublasXtHandle_t handl
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtSspmm(cublasXtHandle_t handle, cublasSideMode_t side,
-                                                         cublasFillMode_t uplo, size_t m, size_t n, const float *alpha,
-                                                         const float *AP, const float *B, size_t ldb, const float *beta,
-                                                         float *C, size_t ldc) {
+                                                          cublasFillMode_t uplo, size_t m, size_t n, const float *alpha,
+                                                          const float *AP, const float *B, size_t ldb, const float *beta,
+                                                          float *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtSspmm");
     using func_ptr =
         cublasStatus_t (*)(cublasXtHandle_t, cublasSideMode_t, cublasFillMode_t, size_t, size_t, const float *,
@@ -5044,9 +5066,9 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtSspmm(cublasXtHandle_t handle
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtDspmm(cublasXtHandle_t handle, cublasSideMode_t side,
-                                                         cublasFillMode_t uplo, size_t m, size_t n, const double *alpha,
-                                                         const double *AP, const double *B, size_t ldb,
-                                                         const double *beta, double *C, size_t ldc) {
+                                                          cublasFillMode_t uplo, size_t m, size_t n, const double *alpha,
+                                                          const double *AP, const double *B, size_t ldb,
+                                                          const double *beta, double *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtDspmm");
     using func_ptr =
         cublasStatus_t (*)(cublasXtHandle_t, cublasSideMode_t, cublasFillMode_t, size_t, size_t, const double *,
@@ -5057,10 +5079,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtDspmm(cublasXtHandle_t handle
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtCspmm(cublasXtHandle_t handle, cublasSideMode_t side,
-                                                         cublasFillMode_t uplo, size_t m, size_t n,
-                                                         const cuComplex *alpha, const cuComplex *AP,
-                                                         const cuComplex *B, size_t ldb, const cuComplex *beta,
-                                                         cuComplex *C, size_t ldc) {
+                                                          cublasFillMode_t uplo, size_t m, size_t n,
+                                                          const cuComplex *alpha, const cuComplex *AP,
+                                                          const cuComplex *B, size_t ldb, const cuComplex *beta,
+                                                          cuComplex *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtCspmm");
     using func_ptr =
         cublasStatus_t (*)(cublasXtHandle_t, cublasSideMode_t, cublasFillMode_t, size_t, size_t, const cuComplex *,
@@ -5071,10 +5093,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtCspmm(cublasXtHandle_t handle
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtZspmm(cublasXtHandle_t handle, cublasSideMode_t side,
-                                                         cublasFillMode_t uplo, size_t m, size_t n,
-                                                         const cuDoubleComplex *alpha, const cuDoubleComplex *AP,
-                                                         const cuDoubleComplex *B, size_t ldb,
-                                                         const cuDoubleComplex *beta, cuDoubleComplex *C, size_t ldc) {
+                                                          cublasFillMode_t uplo, size_t m, size_t n,
+                                                          const cuDoubleComplex *alpha, const cuDoubleComplex *AP,
+                                                          const cuDoubleComplex *B, size_t ldb,
+                                                          const cuDoubleComplex *beta, cuDoubleComplex *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtZspmm");
     using func_ptr = cublasStatus_t (*)(cublasXtHandle_t, cublasSideMode_t, cublasFillMode_t, size_t, size_t,
                                         const cuDoubleComplex *, const cuDoubleComplex *, const cuDoubleComplex *,
@@ -5085,10 +5107,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtZspmm(cublasXtHandle_t handle
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtStrmm(cublasXtHandle_t handle, cublasSideMode_t side,
-                                                         cublasFillMode_t uplo, cublasOperation_t trans,
-                                                         cublasDiagType_t diag, size_t m, size_t n, const float *alpha,
-                                                         const float *A, size_t lda, const float *B, size_t ldb,
-                                                         float *C, size_t ldc) {
+                                                          cublasFillMode_t uplo, cublasOperation_t trans,
+                                                          cublasDiagType_t diag, size_t m, size_t n, const float *alpha,
+                                                          const float *A, size_t lda, const float *B, size_t ldb,
+                                                          float *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtStrmm");
     using func_ptr = cublasStatus_t (*)(cublasXtHandle_t, cublasSideMode_t, cublasFillMode_t, cublasOperation_t,
                                         cublasDiagType_t, size_t, size_t, const float *, const float *, size_t,
@@ -5099,10 +5121,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtStrmm(cublasXtHandle_t handle
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtDtrmm(cublasXtHandle_t handle, cublasSideMode_t side,
-                                                         cublasFillMode_t uplo, cublasOperation_t trans,
-                                                         cublasDiagType_t diag, size_t m, size_t n, const double *alpha,
-                                                         const double *A, size_t lda, const double *B, size_t ldb,
-                                                         double *C, size_t ldc) {
+                                                          cublasFillMode_t uplo, cublasOperation_t trans,
+                                                          cublasDiagType_t diag, size_t m, size_t n, const double *alpha,
+                                                          const double *A, size_t lda, const double *B, size_t ldb,
+                                                          double *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtDtrmm");
     using func_ptr = cublasStatus_t (*)(cublasXtHandle_t, cublasSideMode_t, cublasFillMode_t, cublasOperation_t,
                                         cublasDiagType_t, size_t, size_t, const double *, const double *, size_t,
@@ -5113,10 +5135,10 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtDtrmm(cublasXtHandle_t handle
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtCtrmm(cublasXtHandle_t handle, cublasSideMode_t side,
-                                                         cublasFillMode_t uplo, cublasOperation_t trans,
-                                                         cublasDiagType_t diag, size_t m, size_t n,
-                                                         const cuComplex *alpha, const cuComplex *A, size_t lda,
-                                                         const cuComplex *B, size_t ldb, cuComplex *C, size_t ldc) {
+                                                          cublasFillMode_t uplo, cublasOperation_t trans,
+                                                          cublasDiagType_t diag, size_t m, size_t n,
+                                                          const cuComplex *alpha, const cuComplex *A, size_t lda,
+                                                          const cuComplex *B, size_t ldb, cuComplex *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtCtrmm");
     using func_ptr = cublasStatus_t (*)(cublasXtHandle_t, cublasSideMode_t, cublasFillMode_t, cublasOperation_t,
                                         cublasDiagType_t, size_t, size_t, const cuComplex *, const cuComplex *, size_t,
@@ -5127,11 +5149,11 @@ HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtCtrmm(cublasXtHandle_t handle
 }
 
 HOOK_C_API HOOK_DECL_EXPORT cublasStatus_t cublasXtZtrmm(cublasXtHandle_t handle, cublasSideMode_t side,
-                                                         cublasFillMode_t uplo, cublasOperation_t trans,
-                                                         cublasDiagType_t diag, size_t m, size_t n,
-                                                         const cuDoubleComplex *alpha, const cuDoubleComplex *A,
-                                                         size_t lda, const cuDoubleComplex *B, size_t ldb,
-                                                         cuDoubleComplex *C, size_t ldc) {
+                                                          cublasFillMode_t uplo, cublasOperation_t trans,
+                                                          cublasDiagType_t diag, size_t m, size_t n,
+                                                          const cuDoubleComplex *alpha, const cuDoubleComplex *A,
+                                                          size_t lda, const cuDoubleComplex *B, size_t ldb,
+                                                          cuDoubleComplex *C, size_t ldc) {
     HOOK_TRACE_PROFILE("cublasXtZtrmm");
     using func_ptr =
         cublasStatus_t (*)(cublasXtHandle_t, cublasSideMode_t, cublasFillMode_t, cublasOperation_t, cublasDiagType_t,

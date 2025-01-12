@@ -47,6 +47,15 @@ inline long int get_tid() {
                 HOOK_LOG_FILE(__FILE__), __LINE__, __FUNCTION__, ##__VA_ARGS__);                                 \
     } while (0)
 
+#define HLOG_TO_FILE(file_ptr, format, ...)                                                                       \
+    do {                                                                                                          \
+        if (file_ptr) {                                                                                           \
+            fprintf(file_ptr, "[%s %s %d:%ld %s:%d %s] " format "\n", HOOK_LOG_TAG, curr_time(), get_pid(), get_tid(), \
+                    HOOK_LOG_FILE(__FILE__), __LINE__, __FUNCTION__, ##__VA_ARGS__);                              \
+            fflush(file_ptr);                                                                                     \
+        }                                                                                                         \
+    } while (0)
+
 #define HOOK_CHECK(x)                     \
     do {                                  \
         if (HOOK_UNLIKELY(!(x))) {        \

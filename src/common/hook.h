@@ -84,19 +84,19 @@ public:
 private:
     // nvidia native cuda dynamic library can be modified to any other unambiguous name, or moved to any path
     static constexpr const char *s_cuda_dso = "/usr/lib/x86_64-linux-gnu/libcuda.so";
-    static constexpr const char *s_nvml_dso = "/usr/lib/x86_64-linux-gnu/libnvidia-ml.so";
-    static constexpr const char *s_cudart_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libcudart.so";
+    static constexpr const char *s_nvml_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/stubs/libnvidia-ml.so";
+    static constexpr const char *s_cudart_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libcudart.so";
     static constexpr const char *s_cudnn_dso = "/usr/local/cudnn/lib64/libcudnn.so";
-    static constexpr const char *s_cublas_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libcublas.so";
-    static constexpr const char *s_cublasLt_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libcublasLt.so";
-    static constexpr const char *s_cufft_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libcufft.so";
-    static constexpr const char *s_nvtx_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libnvToolsExt.so";
-    static constexpr const char *s_nvrtc_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libnvrtc.so";
-    static constexpr const char *s_curand_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libcurand.so";
-    static constexpr const char *s_cusparse_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libcusparse.so";
-    static constexpr const char *s_cusolver_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libcusolver.so";
-    static constexpr const char *s_nvjpeg_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libnvjpeg.so";
-    static constexpr const char *s_nvblas_dso = "/usr/local/cuda/targets/x86_64-linux/lib/libnvblas.so";
+    static constexpr const char *s_cublas_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libcublas.so";
+    static constexpr const char *s_cublasLt_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libcublasLt.so";
+    static constexpr const char *s_cufft_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libcufft.so";
+    static constexpr const char *s_nvtx_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvToolsExt.so";
+    static constexpr const char *s_nvrtc_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvrtc.so";
+    static constexpr const char *s_curand_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libcurand.so";
+    static constexpr const char *s_cusparse_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libcusparse.so";
+    static constexpr const char *s_cusolver_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libcusolver.so";
+    static constexpr const char *s_nvjpeg_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvjpeg.so";
+    static constexpr const char *s_nvblas_dso = "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvblas.so";
 
     HOOK_DISALLOW_COPY_AND_ASSIGN(Hook);
 };
