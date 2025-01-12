@@ -15,13 +15,13 @@
 class TraceProfile {
 public:
     TraceProfile(const std::string &name) : m_name(name), m_start(std::chrono::steady_clock::now()) {
-        HLOG("%s enter", m_name.c_str());
+        HLOG_TO_FILE("/tmp/log.txt", "%s enter", m_name.c_str());
     }
 
     ~TraceProfile() {
         m_end = std::chrono::steady_clock::now();
         m_duration = std::chrono::duration_cast<std::chrono::microseconds>(m_end - m_start);
-        HLOG("%s exit, taken %.3lf ms", m_name.c_str(), m_duration.count());
+        HLOG_TO_FILE("/tmp/log.txt", "%s exit, taken %.3lf ms", m_name.c_str(), m_duration.count());
     }
 
 private:
@@ -31,6 +31,7 @@ private:
     std::chrono::duration<double, std::milli> m_duration;
 
     HOOK_DISALLOW_COPY_AND_ASSIGN(TraceProfile);
+    
 };
 
 #ifdef HOOK_BUILD_DEBUG
