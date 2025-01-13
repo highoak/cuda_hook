@@ -58,63 +58,63 @@ echo_cmd "cmake -DCMAKE_CUDA_ARCHITECTURES=$CUDA_ARCHITECTURE -DCMAKE_BUILD_TYPE
 echo_cmd "make -j$(nproc --ignore=2)"
 echo_cmd "make install"
 
-echo "========== create soft link =========="
+# echo "========== create soft link =========="
 
-# cuda
-echo_cmd "ln -s libcuda_hook.so libcuda.so.1"
-echo_cmd "ln -s libcuda.so.1 libcuda.so"
+# # cuda
+# echo_cmd "ln -s libcuda_hook.so libcuda.so.1"
+# echo_cmd "ln -s libcuda.so.1 libcuda.so"
 
-# nvml
-echo_cmd "ln -s libcuda_hook.so libnvidia-ml.so.1"
-echo_cmd "ln -s libnvidia-ml.so.1 libnvidia-ml.so"
+# # nvml
+# echo_cmd "ln -s libcuda_hook.so libnvidia-ml.so.1"
+# echo_cmd "ln -s libnvidia-ml.so.1 libnvidia-ml.so"
 
-# cudart
-echo_cmd "ln -s libcuda_hook.so libcudart.so.11.0"
-echo_cmd "ln -s libcudart.so.11.0 libcudart.so"
+# # cudart
+# echo_cmd "ln -s libcuda_hook.so libcudart.so.11.0"
+# echo_cmd "ln -s libcudart.so.11.0 libcudart.so"
 
-# cudnn
-echo_cmd "ln -s libcuda_hook.so libcudnn.so.7"
-echo_cmd "ln -s libcudnn.so.7 libcudnn.so"
+# # cudnn
+# echo_cmd "ln -s libcuda_hook.so libcudnn.so.7"
+# echo_cmd "ln -s libcudnn.so.7 libcudnn.so"
 
 # cublas
 echo_cmd "ln -s libcuda_hook.so libcublas.so.11"
 echo_cmd "ln -s libcublas.so.11 libcublas.so"
 
-# cublasLt
-echo_cmd "ln -s libcuda_hook.so libcublasLt.so.11"
-echo_cmd "ln -s libcublasLt.so.11 libcublasLt.so"
+# # cublasLt
+# echo_cmd "ln -s libcuda_hook.so libcublasLt.so.11"
+# echo_cmd "ln -s libcublasLt.so.11 libcublasLt.so"
 
-# cufft
-echo_cmd "ln -s libcuda_hook.so libcufft.so.10"
-echo_cmd "ln -s libcufft.so.10 libcufft.so"
+# # cufft
+# echo_cmd "ln -s libcuda_hook.so libcufft.so.10"
+# echo_cmd "ln -s libcufft.so.10 libcufft.so"
 
-# nvtx
-echo_cmd "ln -s libcuda_hook.so libnvToolsExt.so.1"
-echo_cmd "ln -s libnvToolsExt.so.1 libnvToolsExt.so"
+# # nvtx
+# echo_cmd "ln -s libcuda_hook.so libnvToolsExt.so.1"
+# echo_cmd "ln -s libnvToolsExt.so.1 libnvToolsExt.so"
 
-# nvrtc
-echo_cmd "ln -s libcuda_hook.so libnvrtc.so.11.2"
-echo_cmd "ln -s libnvrtc.so.11.2 libnvrtc.so"
+# # nvrtc
+# echo_cmd "ln -s libcuda_hook.so libnvrtc.so.11.2"
+# echo_cmd "ln -s libnvrtc.so.11.2 libnvrtc.so"
 
-# curand
-echo_cmd "ln -s libcuda_hook.so libcurand.so.10"
-echo_cmd "ln -s libcurand.so.10 libcurand.so"
+# # curand
+# echo_cmd "ln -s libcuda_hook.so libcurand.so.10"
+# echo_cmd "ln -s libcurand.so.10 libcurand.so"
 
-# cusparse
-echo_cmd "ln -s libcuda_hook.so libcusparse.so.11"
-echo_cmd "ln -s libcusparse.so.11 libcusparse.so"
+# # cusparse
+# echo_cmd "ln -s libcuda_hook.so libcusparse.so.11"
+# echo_cmd "ln -s libcusparse.so.11 libcusparse.so"
 
-# cusolver
-echo_cmd "ln -s libcuda_hook.so libcusolver.so.11"
-echo_cmd "ln -s libcusolver.so.11 libcusolver.so"
+# # cusolver
+# echo_cmd "ln -s libcuda_hook.so libcusolver.so.11"
+# echo_cmd "ln -s libcusolver.so.11 libcusolver.so"
 
-# nvjpeg
-echo_cmd "ln -s libcuda_hook.so libnvjpeg.so.11"
-echo_cmd "ln -s libnvjpeg.so.11 libnvjpeg.so"
+# # nvjpeg
+# echo_cmd "ln -s libcuda_hook.so libnvjpeg.so.11"
+# echo_cmd "ln -s libnvjpeg.so.11 libnvjpeg.so"
 
-# nvblas
-echo_cmd "ln -s libcuda_hook.so libnvblas.so.11"
-echo_cmd "ln -s libnvblas.so.11 libnvblas.so"
+# # nvblas
+# echo_cmd "ln -s libcuda_hook.so libnvblas.so.11"
+# echo_cmd "ln -s libnvblas.so.11 libnvblas.so"
 
 echo_cmd "cp -d *.so *.so.* $WORK_PATH/output/lib64"
 

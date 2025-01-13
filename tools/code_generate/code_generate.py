@@ -55,7 +55,8 @@ HOOK_C_API HOOK_DECL_EXPORT $ret$ $func_name$($func_param$) {
     def generate_func(self):
         for func in self.header.functions:
             func_name = func["name"]
-            if func_name in self.func_list:
+            lower_func_name = func_name.lower()
+            if func_name in self.func_list or lower_func_name.find('gemm') == -1:
                 continue
             else:
                 self.func_list.append(func_name)
